@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Judgement(
-    val time: Double,
+    val time: Int,
     val x: Double,
     val y: Double,
     val type: Type,

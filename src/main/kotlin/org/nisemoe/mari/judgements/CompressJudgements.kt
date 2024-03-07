@@ -55,7 +55,7 @@ class CompressJudgements {
 
         fun compress(judgements: List<Judgement>): ByteArray {
             val byteStream = ByteArrayOutputStream()
-            var lastTimestamp = 0.0
+            var lastTimestamp = 0
 
             judgements.forEach { judgement ->
                 byteStream.use { stream ->
@@ -63,7 +63,7 @@ class CompressJudgements {
                      * We allocate an arbitrary amount of buffer which *hopefully* is enough.
                      */
                     ByteBuffer.allocate(4096).let { buffer ->
-                        buffer.putVLQ((judgement.time - lastTimestamp).toInt())
+                        buffer.putVLQ((judgement.time - lastTimestamp))
                         buffer.putVLQ(round(judgement.x * 100).toInt())
                         buffer.putVLQ(round(judgement.y * 100).toInt())
                         buffer.put(judgement.type.ordinal.toByte())
@@ -85,7 +85,7 @@ class CompressJudgements {
 
             val buffer = ByteBuffer.wrap(data)
             val judgements = mutableListOf<Judgement>()
-            var lastTime = 0.0
+            var lastTime = 0
 
             while (buffer.hasRemaining()) {
                 val deltaTime = buffer.getVLQ()
